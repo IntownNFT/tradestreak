@@ -62,7 +62,7 @@ export function ContributionsChart({
           value={selectedYear.toString()} 
           onValueChange={handleYearChange}
         >
-          <SelectTrigger className="w-[180px] bg-[rgba(191,219,254,1)] border-[rgba(191,219,254,0.5)]">
+          <SelectTrigger className="w-[180px] bg-[#141414] border-[rgba(191,219,254,0.5)]">
             <SelectValue placeholder="Select year" />
           </SelectTrigger>
           <SelectContent className="bg-[#141414] border-[rgba(191,219,254,0.5)]">

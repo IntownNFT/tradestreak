@@ -14,26 +14,39 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
+        console.log("Authorize function called with credentials:", credentials)
+
         if (!credentials?.email || !credentials?.password) {
+          console.log("Missing email or password")
           return null
         }
 
-        const user = await db.select().from(users).where(eq(users.email, credentials.email)).limit(1)
+        try {
+          const user = await db.select().from(users).where(eq(users.email, credentials.email)).limit(1)
+          console.log("User query result:", user)
 
-        if (user.length === 0) {
+          if (user.length === 0) {
+            console.log("No user found with the provided email")
+            return null
+          }
+
+          const isPasswordValid = await bcrypt.compare(credentials.password, user[0].passwordHash)
+          console.log("Password validation result:", isPasswordValid)
+
+          if (!isPasswordValid) {
+            console.log("Invalid password")
+            return null
+          }
+
+          console.log("Authentication successful")
+          return {
+            id: user[0].id,
+            email: user[0].email,
+            name: user[0].name,
+          }
+        } catch (error) {
+          console.error("Error in authorize function:", error)
           return null
-        }
-
-        const isPasswordValid = await bcrypt.compare(credentials.password, user[0].passwordHash)
-
-        if (!isPasswordValid) {
-          return null
-        }
-
-        return {
-          id: user[0].id,
-          email: user[0].email,
-          name: user[0].name,
         }
       }
     })
@@ -57,7 +70,8 @@ const handler = NextAuth({
   },
   pages: {
     signIn: '/auth/signin',
-  }
+  },
+  debug: true, // Enable debug messages
 })
 
 export { handler as GET, handler as POST }

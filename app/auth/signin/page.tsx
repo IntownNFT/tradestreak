@@ -23,6 +23,8 @@ export default function SignIn() {
       password,
     })
 
+    console.log(result) // Add this line to log the result
+
     if (result?.ok) {
       router.push("/")
     } else {

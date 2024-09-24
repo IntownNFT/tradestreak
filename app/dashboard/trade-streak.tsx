@@ -106,22 +106,17 @@ export function TradeStreak() {
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-[rgba(229,231,235,1)] p-4">
-      <div className="max-w-6xl mx-auto space-y-8"> {/* Changed from space-y-12 to space-y-8 */}
+      <div className="max-w-6xl mx-auto space-y-8">
         <Navbar
           currentProject={currentProject}
           updateProject={updateProject}
           deleteProject={deleteProject}
         />
 
-        <div className="space-y-4"> {/* Added this div with space-y-4 */}
-          <SafetyNotice />
-          <WelcomeBanner 
-            userName={session.user?.name || 'User'} 
-            onUserGuideClick={handleUserGuideClick}
-          />
-        </div>
+        <SafetyNotice />
 
-        <ProjectSelector
+        <WelcomeBanner 
+          userName={session.user?.name || 'User'}
           projects={projects}
           currentProject={currentProject}
           setCurrentProject={setCurrentProject}
@@ -129,7 +124,7 @@ export function TradeStreak() {
         />
 
         <div className="flex flex-col md:flex-row gap-10">
-          <div className="flex-grow md:w-1/2 space-y-8">
+          <div className="flex-grow md:w-1/2 space-y-8 pt-8">
             <TaskInput addTask={handleAddTask} />
             <TaskList
               tasks={tasks.filter(task => !task.completed && task.project_id === currentProject?.id)}
@@ -139,7 +134,7 @@ export function TradeStreak() {
             />
           </div>
 
-          <div className="md:w-1/2 space-y-8">
+          <div className="md:w-1/2 space-y-8 pt-8">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-2 bg-[#141414]">
                 <TabsTrigger value="statistics" className="text-[rgba(191,219,254,1)] data-[state=active]:bg-[rgba(191,219,254,1)]">Statistics</TabsTrigger>

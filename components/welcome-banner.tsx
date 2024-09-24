@@ -1,18 +1,24 @@
-import { Button } from "@/components/ui/button"
 import { BarChart2 } from "lucide-react"
-import { AddAccountDialog } from "./add-account-dialog"
-import { useState } from "react"
+import { ProjectSelector } from "./project-selector"
+import { Project } from "@/types"
 
 interface WelcomeBannerProps {
   userName: string
-  onUserGuideClick: () => void
+  projects: Project[]
+  currentProject: Project | null
+  setCurrentProject: (project: Project | null) => void
+  addProject: (name: string, tradingDaysPerWeek: number) => void
 }
 
-export function WelcomeBanner({ userName, onUserGuideClick }: WelcomeBannerProps) {
-  const [isAddAccountDialogOpen, setIsAddAccountDialogOpen] = useState(false)
-
+export function WelcomeBanner({ 
+  userName, 
+  projects, 
+  currentProject, 
+  setCurrentProject, 
+  addProject 
+}: WelcomeBannerProps) {
   return (
-    <div className="w-full p-8 rounded-xl relative overflow-hidden bg-[#141414]">
+    <div className="w-full p-8 rounded-xl relative overflow-hidden bg-[#141414] mb-16">
       <div className="max-w-4xl relative z-10">
         <h1 className="text-4xl font-bold mb-12 text-[rgba(191,219,254,1)]">
           Welcome {userName}
@@ -21,31 +27,16 @@ export function WelcomeBanner({ userName, onUserGuideClick }: WelcomeBannerProps
           Ready to start your trading journey?
         </h2>
         <p className="mb-6 text-[rgba(229,231,235,1)]">
-          We recommend that you go through the User Guide section before connecting an account
+          To connect an account, first create a portfolio.
         </p>
-        <div className="flex flex-wrap gap-4">
-          <Button 
-            className="bg-[rgba(191,219,254,1)] text-[#0f0f0f] hover:bg-[rgba(191,219,254,0.8)]"
-          >
-            Enter Competition
-          </Button>
-          <Button 
-            onClick={() => setIsAddAccountDialogOpen(true)}
-            className="bg-[rgba(191,219,254,1)] text-[#0f0f0f] hover:bg-[rgba(191,219,254,0.8)]"
-          >
-            Connect Account
-          </Button>
-          <Button 
-            className="bg-[rgba(191,219,254,1)] text-[#0f0f0f] hover:bg-[rgba(191,219,254,0.8)]"
-            onClick={onUserGuideClick}
-          >
-            User Guide
-          </Button>
+        <div>
+          <ProjectSelector
+            projects={projects}
+            currentProject={currentProject}
+            setCurrentProject={setCurrentProject}
+            addProject={addProject}
+          />
         </div>
-        <AddAccountDialog 
-          isOpen={isAddAccountDialogOpen} 
-          onClose={() => setIsAddAccountDialogOpen(false)} 
-        />
       </div>
       <div className="absolute top-1/2 right-8 transform -translate-y-1/2">
         <BarChart2 className="w-48 h-48 text-[rgba(191,219,254,1)]" />

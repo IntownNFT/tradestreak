@@ -34,24 +34,9 @@ export function ProjectSelector({ projects, currentProject, setCurrentProject, a
 
   return (
     <div className="flex items-center space-x-4">
-      <Select
-        value={currentProject?.id || ""}
-        onValueChange={handleProjectChange}
-      >
-        <SelectTrigger className="w-[250px] bg-[#141414] border-[#141414] text-white">
-          <SelectValue placeholder="Select a project" />
-        </SelectTrigger>
-        <SelectContent className="bg-[#141414] border-[#141414] text-white">
-          {projects.map((project) => (
-            <SelectItem key={project.id} value={project.id} className="text-white hover:bg-[#1f1f1f]">
-              {project.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="bg-[#141414] border-0 text-[rgba(191,219,254,1)]">
+          <Button className="bg-[rgba(191,219,254,1)] text-[#0f0f0f] hover:bg-[rgba(191,219,254,0.8)]">
             New Portfolio
           </Button>
         </DialogTrigger>
@@ -94,6 +79,21 @@ export function ProjectSelector({ projects, currentProject, setCurrentProject, a
           </Button>
         </DialogContent>
       </Dialog>
+      <Select
+        value={currentProject?.id || ""}
+        onValueChange={handleProjectChange}
+      >
+        <SelectTrigger className="w-[250px] bg-[rgba(191,219,254,1)] text-[#0f0f0f] border-none">
+          <SelectValue placeholder="Select a portfolio" />
+        </SelectTrigger>
+        <SelectContent className="bg-[rgba(191,219,254,1)] border-none">
+          {projects.map((project) => (
+            <SelectItem key={project.id} value={project.id} className="text-[#0f0f0f] hover:bg-[rgba(191,219,254,0.8)]">
+              {project.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   )
 }

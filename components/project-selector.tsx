@@ -52,12 +52,12 @@ export function ProjectSelector({ projects, currentProject, setCurrentProject, a
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" className="bg-[#141414] border-0 text-[rgba(191,219,254,1)]">
-            New Project
+            New Portfolio
           </Button>
         </DialogTrigger>
         <DialogContent className="bg-[#141414] border-[#141414]">
           <DialogHeader>
-            <DialogTitle className="text-[rgba(191,219,254,1)]">Create New Project</DialogTitle>
+            <DialogTitle className="text-[rgba(191,219,254,1)]">Create New Portfolio</DialogTitle>
           </DialogHeader>
           <div className="grid gap-6 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -90,7 +90,7 @@ export function ProjectSelector({ projects, currentProject, setCurrentProject, a
             </div>
           </div>
           <Button onClick={handleAddProject} className="bg-[rgba(191,219,254,1)] text-[#0f0f0f] hover:bg-[rgba(191,219,254,0.8)]">
-            Create Project
+            Create Portfolio
           </Button>
         </DialogContent>
       </Dialog>

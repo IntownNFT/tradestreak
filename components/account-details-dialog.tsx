@@ -12,7 +12,7 @@ interface AccountDetailsDialogProps {
 export function AccountDetailsDialog({ isOpen, onClose, account }: AccountDetailsDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-[#141414] text-[rgba(229,231,235,1)] border-none max-w-3xl">
+      <DialogContent className="bg-[#141414] text-white border-none max-w-3xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[rgba(191,219,254,1)]">Account Details</DialogTitle>
         </DialogHeader>
@@ -21,7 +21,7 @@ export function AccountDetailsDialog({ isOpen, onClose, account }: AccountDetail
             <CardHeader>
               <CardTitle className="text-[rgba(191,219,254,1)]">Account Information</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="text-white">
               <div className="grid grid-cols-2 gap-4">
                 <div>Name: {account.name}</div>
                 <div>Login: {account.login}</div>
@@ -49,7 +49,7 @@ export function AccountDetailsDialog({ isOpen, onClose, account }: AccountDetail
                     <TableHead className="text-[rgba(191,219,254,0.9)]">Profit</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="text-white">
                   {account.openTrades && account.openTrades.length > 0 ? (
                     account.openTrades.map((trade, index) => (
                       <TableRow key={index}>

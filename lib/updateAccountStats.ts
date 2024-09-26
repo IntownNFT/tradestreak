@@ -1,51 +1,53 @@
-import { initializeMetaApi } from '@/lib/metaapi';
+import { getAccountInformation, getOpenPositions, getMetrics, isMetaStatsEnabled } from '@/lib/metaapi';
 import { db } from '@/db/db';
 import { tradingAccounts } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 export async function updateAccountStats() {
+  console.log('Starting updateAccountStats function');
   try {
-    const api = initializeMetaApi();
     const accounts = await db.select().from(tradingAccounts);
+    console.log(`Found ${accounts.length} accounts to update`);
 
     for (const account of accounts) {
       try {
-        console.log(`Updating stats for account: ${account.id}`);
-        const metaApiAccount = await api.metatraderAccountApi.getAccount(account.accountId);
-        
-        // Get RPC connection
-        const connection = metaApiAccount.getRPCConnection();
-        await connection.connect();
-        await connection.waitSynchronized();
+        console.log(`Updating stats for account: ${account.accountId}`);
 
-        console.log('Account connected, fetching data...');
+        const accountInfo = await getAccountInformation(account.accountId);
+        console.log('Account Information fetched successfully');
 
-        // Fetch account information using RPC connection
-        const accountInfo = await connection.getAccountInformation();
-        console.log('Account Information:', accountInfo);
+        const openTrades = await getOpenPositions(account.accountId);
+        console.log(`Fetched ${openTrades.length} open trades`);
 
-        // Fetch open trades using RPC connection
-        const openTrades = await connection.getPositions();
-        console.log('Open Trades:', openTrades);
+        let tradeStats = {};
+        const metaStatsEnabled = await isMetaStatsEnabled(account.accountId);
+        if (metaStatsEnabled) {
+          try {
+            tradeStats = await getMetrics(account.accountId);
+            console.log('Trade Statistics fetched successfully');
+          } catch (metaStatsError) {
+            console.error(`Error fetching trade statistics for account ${account.accountId}:`, metaStatsError);
+          }
+        } else {
+          console.log(`MetaStats not enabled for account ${account.accountId}`);
+        }
 
-        // Update the trading account with the new stats
         await db.update(tradingAccounts)
           .set({
             accountInfo,
             openTrades,
+            metrics: tradeStats,
             updatedAt: new Date()
           })
           .where(eq(tradingAccounts.id, account.id));
 
-        console.log(`Stats updated for account: ${account.id}`);
-
-        // Close the connection
-        await connection.close();
+        console.log(`Stats updated for account: ${account.accountId}`);
       } catch (accountError) {
-        console.error(`Error updating account ${account.id}:`, accountError);
+        console.error(`Error updating account ${account.accountId}:`, accountError);
       }
     }
 
+    console.log('All account stats updated successfully');
     return { success: true };
   } catch (error) {
     console.error('Error updating account statistics:', error);

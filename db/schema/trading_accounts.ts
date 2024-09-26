@@ -10,7 +10,7 @@ export const tradingAccounts = pgTable("trading_accounts", {
   login: varchar("login", { length: 255 }).notNull(),
   server: varchar("server", { length: 255 }).notNull(),
   accountInfo: jsonb("account_info"),
-  metrics: jsonb("metrics"),
+  metrics: jsonb("metrics"), // Ensure this line is present
   openTrades: jsonb("open_trades"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull()

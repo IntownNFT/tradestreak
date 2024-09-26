@@ -5,13 +5,14 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { db } from '@/db/db';
 import { tradingAccounts } from '@/db/schema';
 import { updateAccountStats } from '@/lib/updateAccountStats';
+import { AccountType } from 'metaapi.cloud-sdk'; // Import the correct type
 
 const DEPLOYMENT_WAIT_TIME = 120000; // 2 minutes
 
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    if (!session || !session.user || !session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
     const api = initializeMetaApi();
     const account = await api.metatraderAccountApi.createAccount({
       name,
-      type: 'cloud',
+      type: 'cloud' as AccountType, // Use the correct type
       login,
       password,
       server,
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
       server: account.server,
       accountInfo: {},
       openTrades: [],
-      metrics: {},
+      metrics: {}, // Initialize metrics field
     }).returning();
 
     console.log('Account stored in database:', newTradingAccount.id);
@@ -63,12 +64,12 @@ export async function POST(req: NextRequest) {
       success: true, 
       account: newTradingAccount
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error creating MetaTrader account:', error);
     return NextResponse.json({ 
       error: 'Failed to create MetaTrader account', 
-      details: error.message,
-      stack: error.stack
+      details: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
     }, { status: 500 });
   }
 }

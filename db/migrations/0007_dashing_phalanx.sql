@@ -1,0 +1,1 @@
+ALTER TABLE "trading_accounts" DROP COLUMN IF EXISTS "meta_stats";

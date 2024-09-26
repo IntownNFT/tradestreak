@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useTradeStreak } from "@/hooks/use-trade-streak"
-import { ProjectSelector } from "@/components/project-selector"
 import { TaskInput } from "@/components/task-input"
 import { TaskList } from "@/components/task-list"
 import { Statistics } from "@/components/statistics"
@@ -50,10 +49,6 @@ export function TradeStreak() {
   const [change24h] = useState("+5.23%")
 
   const userGuideRef = useRef<HTMLDivElement>(null)
-
-  const handleUserGuideClick = () => {
-    userGuideRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -172,7 +167,7 @@ export function TradeStreak() {
         </Card>
 
         <div className="mt-12 py-8">
-          <TradingAccountSetup />
+          {currentProject && <TradingAccountSetup projectId={currentProject.id} />}
         </div>
 
         <div ref={userGuideRef}>

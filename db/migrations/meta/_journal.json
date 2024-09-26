@@ -15,6 +15,48 @@
       "when": 1727123407623,
       "tag": "0001_fine_patriot",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1727288231332,
+      "tag": "0002_colorful_bloodscream",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1727294848430,
+      "tag": "0003_warm_sugar_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1727295572504,
+      "tag": "0004_brave_grey_gargoyle",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1727295933605,
+      "tag": "0005_brief_spencer_smythe",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1727299802771,
+      "tag": "0006_nappy_skaar",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1727299935694,
+      "tag": "0007_dashing_phalanx",
+      "breakpoints": true
     }
   ]
 }
